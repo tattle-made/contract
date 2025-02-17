@@ -10,3 +10,10 @@ defmodule Contract.Entity.Trade do
           to: String.t()
         }
 end
+
+defmodule Contract.Entity.Trade.NoOpenTrade do
+  defexception message: "You are trying to accept a trade that doesn't have an open counterpart"
+end
+
+defmodule Contract.Entity.TradeList do
+end
