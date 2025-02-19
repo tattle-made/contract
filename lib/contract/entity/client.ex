@@ -1,6 +1,6 @@
 defmodule Contract.Entity.Client do
   alias Contract.Entity.Client
-  alias Contract.Canon.Card
+  alias Contract.Entity.Card
   defstruct [:id, :name, :requirements]
 
   @type t :: %__MODULE__{
@@ -9,11 +9,11 @@ defmodule Contract.Entity.Client do
           requirements: list(Card.t())
         }
 
-  def new(card_count) do
+  def new(card_count, card_factory) do
     %Client{
       id: UXID.generate!(prefix: "client", size: :small),
       name: "",
-      requirements: 1..card_count |> Enum.map(fn _ -> Card.random() end)
+      requirements: 1..card_count |> Enum.map(fn _ -> card_factory.() end)
     }
   end
 end

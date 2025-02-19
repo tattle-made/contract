@@ -28,6 +28,10 @@ defmodule Contract.Entity.Player do
   def add_to_hand(%Player{} = player, %Card{} = card) do
     %{player | hand: player.hand ++ [card]}
   end
+
+  def freelancer?(%Player{} = player) do
+    player.type == :freelancer
+  end
 end
 
 defmodule Contract.Entity.PlayerMap do
@@ -40,6 +44,8 @@ defmodule Contract.Entity.PlayerMap do
     |> Enum.filter(&(&1.name == name))
     |> hd
   end
+
+  # def increment_score
 
   def card_in_hand(player, shape, property) do
     player.hand

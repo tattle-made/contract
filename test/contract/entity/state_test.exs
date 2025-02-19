@@ -1,4 +1,5 @@
 defmodule Contract.Entity.StateTest do
+  require IEx
   alias Contract.Entity.PlayerMap
   alias Contract.Entity.Room.IncorrectPasswordException
   alias Contract.StateFixtures
@@ -57,6 +58,11 @@ defmodule Contract.Entity.StateTest do
       assert card in farah.hand
       assert card_farah in krys.hand
 
+      cards =
+        [PlayerMap.card_in_hand(krys, "card_01JMCAWVDZM731")]
+        |> Enum.map(&Card.value/1)
+
+      IEx.pry()
       # secret swap
 
       # submit to client

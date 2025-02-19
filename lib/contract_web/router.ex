@@ -20,6 +20,12 @@ defmodule ContractWeb.Router do
     get "/", PageController, :home
   end
 
+  scope "/design", ContractWeb do
+    pipe_through :browser
+
+    live "/four-player", DesignLive.FourPlayer, :index
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", ContractWeb do
   #   pipe_through :api

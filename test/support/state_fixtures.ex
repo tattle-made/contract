@@ -1,10 +1,11 @@
 defmodule Contract.StateFixtures do
   require IEx
+  alias Contract.Entity.Client
   alias Contract.Entity.PlayerMap
   alias Contract.Factory
   alias Contract.Entity.Trade.NoOpenTrade
   alias Contract.Entity.Trade
-  alias Contract.Canon.Card
+  alias Contract.Entity.Card
   alias Contract.Entity.Room.IncorrectPasswordException
   alias Contract.Entity.Player
   alias Contract.Entity.Round
@@ -22,7 +23,8 @@ defmodule Contract.StateFixtures do
       },
       round: %Round{},
       players: %{},
-      trades: []
+      trades: [],
+      reports: %{}
     }
   end
 
@@ -61,7 +63,7 @@ defmodule Contract.StateFixtures do
   end
 
   def first_round(%State{} = state) do
-    %{state | round: Round.new(1)}
+    %{state | round: Round.new(1, &Factory.make_random_card_entity/0)}
   end
 
   def open_trade(%State{} = state, card_id, from, to) do
@@ -97,5 +99,58 @@ defmodule Contract.StateFixtures do
 
         %{state | players: players, trades: trades}
     end
+  end
+
+  def can_submit_to_client(%State{} = state, cards, client_id) do
+    client = Round.client(state.round, client_id)
+    client_requirements = client.requirements |> Enum.map(&Card.value/1)
+
+    is_subset = MapSet.subset?(MapSet.new(client_requirements), MapSet.new(cards))
+    is_same_length = length(client_requirements) == length(cards)
+
+    is_subset && is_same_length
+  end
+
+  def submit_to_client(%State{} = state, player_id, cards, client_id) do
+    # update player score
+
+    # remove cards from player's hands
+    player = state.players[player_id]
+
+    players =
+      Enum.reduce(cards, state.players, fn card, players ->
+        PlayerMap.remove_from_hand(players, player.id, card)
+      end)
+
+    # remove client from round
+    client = state.round.clients[client_id]
+    clients = state.round.clients |> List.delete(client)
+    round = %{state.round | clients: clients}
+
+    %{state | players: players, round: round}
+  end
+
+  def add_report(%State{} = state, player_id) do
+    player = state.players[player_id]
+
+    case Player.freelancer?(player) do
+      true ->
+        total_players = length(state.players)
+        report = state.reports[player_id]
+        # todo add complaints
+        report = %{report | by: report.by ++ [player_id]}
+
+        total_complaints = length(report.by)
+
+        report =
+          if total_complaints > total_players / 2, do: %{report | can_remove: true}, else: report
+
+        # report = %{state.report | reports: %{} }
+
+        %{state | report: report}
+    end
+  end
+
+  def maybe_punish_freelancer(%State{} = state) do
   end
 end
