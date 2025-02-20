@@ -21,6 +21,7 @@ import "phoenix_html";
 import { Socket } from "phoenix";
 import { LiveSocket } from "phoenix_live_view";
 import topbar from "../vendor/topbar";
+import "flowbite/dist/flowbite.phoenix.js";
 
 import { Draggable, Droppable } from "@shopify/draggable";
 import { ClientStaging } from "./client_staging";

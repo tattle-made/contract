@@ -1,27 +1,65 @@
 <section>
-  <h1>4 player game</h1>
-  <h2>Open Trade Component</h2>
+  <div class="p-2 rounded-md border-2 border-gray-100 text-center flex flex-row justify-evenly">
+    <p>4 player game</p>
+    <p>{@state.room.id}</p>
+    <p>{@state.room.name}</p>
+    <p class="font-bold">{@state.round.number}</p>
+  </div>
+  <div class="p-2 mt-2 rounded-md border-2 border-gray-100 ">
+    <h2 class="mb-1">Staff</h2>
+    <div class="flex flex-row justify-stretch gap-2 ">
+      <div
+        :for={staff <- @state.staff_players}
+        class="p-2 w-1/3 rounded-md border-2 border-gray-200 "
+        id=""
+      >
+        <div>
+          <p class="block mb-2">{staff.name}</p>
+          <div class="w-full flex flex-row flex-wrap gap-2">
+            <div :for={card <- staff.hand}>
+              <.tradable_card
+                id={staff.id}
+                player_type={staff.type}
+                card={card}
+                peers={staff.other_staff}
+              />
+            </div>
+          </div>
+        </div>
 
-  <.tradable_card
-    id="player_farah"
-    card={%Card{id: "abc", shape: :star, property: :creative_brief}}
-    peers={[%{id: "pqr", name: "adhiraj"}, %{id: "abc", name: "krys"}]}
-  />
+        <div class="mt-2">
+          <.client_staging id={staff.id} hand={staff.hand} space={%{count: 3}} />
+        </div>
+      </div>
+    </div>
+  </div>
 
-  <div class="mt-2"></div>
-  <h2>Submission Area</h2>
-  <div class="mb-2"></div>
-  <.client_staging
-    hand={[
-      %Card{id: "abc", shape: :star, property: :creative_brief},
-      %Card{id: "def", shape: :crescent_moon, property: :project_estimate},
-      %Card{id: "ghi", shape: :comet, property: :project_estimate},
-      %Card{id: "jkl", shape: :star, property: :marketing_budget}
-    ]}
-    clients={[
-      %{id: "client_adf", name: "Acme"},
-      %{id: "client_rnd", name: "Disney"}
-    ]}
-    space={%{count: 3}}
-  />
+  <div class="p-2 mt-2 rounded-md border-2 border-gray-400 ">
+    <h2 class="mb-1">Freelancer</h2>
+    <div class="flex flex-row justify-stretch gap-2 ">
+      <div
+        :for={freelancer <- @state.freelance_players}
+        class="p-2 rounded-sm border-2 border-gray-400 "
+        id=""
+      >
+        <div>
+          <p class="block">{freelancer.name}</p>
+          <div class="w-full flex flex-row flex-wrap gap-2">
+            <div :for={card <- freelancer.hand}>
+              <.tradable_card
+                id={freelancer.id}
+                player_type={freelancer.type}
+                card={card}
+                peers={freelancer.other_staff}
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-2">
+          <.client_staging id={freelancer.id} hand={freelancer.hand} space={%{count: 3}} />
+        </div>
+      </div>
+    </div>
+  </div>
 </section>

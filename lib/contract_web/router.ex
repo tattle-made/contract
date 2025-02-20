@@ -23,7 +23,8 @@ defmodule ContractWeb.Router do
   scope "/design", ContractWeb do
     pipe_through :browser
 
-    live "/four-player", DesignLive.FourPlayer, :index
+    live "/create", DesignLive.Create, :index
+    live "/four-player/:room_id", DesignLive.FourPlayer, :index
   end
 
   # Other scopes may use custom stacks.
