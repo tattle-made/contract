@@ -147,7 +147,7 @@ defmodule Contract.StateFixtures do
 
         # report = %{state.report | reports: %{} }
 
-        %{state | report: report}
+        %{state | reports: report}
     end
   end
 

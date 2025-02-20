@@ -7,10 +7,10 @@ defmodule Contract.Entity.RoundTest do
 
   describe "entity" do
     test "new/1" do
-      round_a = Round.new(1, &Factory.make_random_card_entity/0) |> IO.inspect()
-      assert %Client{} = round_a.clients
+      round_a = Round.new(1, &Factory.make_random_card_entity/0)
+      assert [%Client{}] = round_a.clients
 
-      round_b = Round.new(3, &Factory.make_random_card_entity/0) |> IO.inspect()
+      round_b = Round.new(3, &Factory.make_random_card_entity/0)
       assert [%Client{} = hd | tail] = round_b.clients
 
       assert_raise RoundNumberMaxExceeded, fn ->

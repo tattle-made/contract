@@ -11,7 +11,7 @@ defmodule Contract.Entity.Round do
   def new(round_count, card_factory) do
     case round_count do
       1 ->
-        %Round{count: round_count, clients: Client.new(1, card_factory)}
+        %Round{count: round_count, clients: [Client.new(1, card_factory)]}
 
       n when n > 1 and n <= 5 ->
         clients = for _ <- 1..4, do: Client.new(:rand.uniform(2) + 1, card_factory)
@@ -24,14 +24,16 @@ defmodule Contract.Entity.Round do
   end
 
   def client(%Round{} = round, client_id) do
-    case round.clients do
-      %Client{} = client ->
-        if client.id == client_id, do: client, else: raise(ClientNotFound)
+    # case round.clients do
+    #   %Client{} = client ->
+    #     if client.id == client_id, do: client, else: raise(ClientNotFound)
 
-      clients when is_list(clients) ->
-        client = clients[client_id]
-        if client.id == client_id, do: client, else: raise(ClientNotFound)
-    end
+    #   clients when is_list(clients) ->
+    #     client = clients[client_id]
+    #     if client.id == client_id, do: client, else: raise(ClientNotFound)
+    # end
+    client = round.clients[client_id]
+    if client.id == client_id, do: client, else: raise(ClientNotFound)
   end
 end
 

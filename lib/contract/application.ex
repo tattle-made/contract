@@ -14,6 +14,7 @@ defmodule Contract.Application do
       {Phoenix.PubSub, name: Contract.PubSub},
       # Start the Finch HTTP client for sending emails
       {Finch, name: Contract.Finch},
+      Contract.Design.RoomSupervisor,
       # Start a worker by calling: Contract.Worker.start_link(arg)
       # {Contract.Worker, arg},
       # Start to serve requests, typically the last entry

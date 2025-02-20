@@ -1,6 +1,7 @@
 defmodule ContractWeb.DesignLive.FourPlayer do
   import ContractWeb.Molecules
   alias Contract.Entity.Card
+  alias Contract.Entity.Client
 
   use ContractWeb, :live_view
   use ContractWeb, :html

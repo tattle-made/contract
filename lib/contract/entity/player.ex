@@ -3,6 +3,15 @@ defmodule Contract.Entity.Player do
   alias Contract.Entity.Player
   defstruct [:type, :id, :name, :hand, :kpi, :score]
 
+  @type t :: %__MODULE__{
+          type: :freelancer | :staff,
+          id: UXID.uxid_string(),
+          name: String.t(),
+          hand: list(Card.t()),
+          kpi: map(),
+          score: integer()
+        }
+
   def new(name, type) do
     %Player{
       type: type,
@@ -31,6 +40,10 @@ defmodule Contract.Entity.Player do
 
   def freelancer?(%Player{} = player) do
     player.type == :freelancer
+  end
+
+  def staff?(%Player{} = player) do
+    player.type == :staff
   end
 end
 

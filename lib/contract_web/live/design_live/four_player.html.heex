@@ -7,4 +7,21 @@
     card={%Card{id: "abc", shape: :star, property: :creative_brief}}
     peers={[%{id: "pqr", name: "adhiraj"}, %{id: "abc", name: "krys"}]}
   />
+
+  <div class="mt-2"></div>
+  <h2>Submission Area</h2>
+  <div class="mb-2"></div>
+  <.client_staging
+    hand={[
+      %Card{id: "abc", shape: :star, property: :creative_brief},
+      %Card{id: "def", shape: :crescent_moon, property: :project_estimate},
+      %Card{id: "ghi", shape: :comet, property: :project_estimate},
+      %Card{id: "jkl", shape: :star, property: :marketing_budget}
+    ]}
+    clients={[
+      %{id: "client_adf", name: "Acme"},
+      %{id: "client_rnd", name: "Disney"}
+    ]}
+    space={%{count: 3}}
+  />
 </section>
