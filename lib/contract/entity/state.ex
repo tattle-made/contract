@@ -47,7 +47,7 @@ defmodule Contract.Entity.State do
   end
 
   def first_round(%State{} = state) do
-    %{state | round: Round.new(1, &Factory.make_random_card_entity/0)}
+    %{state | round: Round.new(2, &Factory.make_random_card_entity/0)}
   end
 
   def open_trade(%State{} = state, card_id, from, to) do

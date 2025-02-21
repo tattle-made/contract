@@ -41,6 +41,7 @@ defmodule ContractWeb.Molecules do
   attr :id, :string, required: true
   attr :card, Card
   attr :peers, :list
+  attr :secret_peers, :list
   attr :player_type, :atom
 
   def tradable_card(assigns) do
@@ -52,25 +53,53 @@ defmodule ContractWeb.Molecules do
           <.card_compact id={@card.id} shape={@card.shape} property={@card.property} />
         </div>
         <div class="mb-2 h-0.5 bg-slate-500"></div>
-        <div class="p-2">
-          <button phx-click={show_peers("##{@card.id}-peers")}>
-            trade
-          </button>
-          <div
-            id={"#{@card.id}-peers"}
-            class="hidden p-2 border-slate-200 border-2 min-w-fit w-40 z-10 absolute bg-slate-200 rounded-md "
-          >
-            <button phx-click={hide_peers("##{@card.id}-peers")} class="mb-2">
-              <.icon name="hero-x-mark-solid" class="h-5 w-5" />
-            </button>
-            <div :for={peer <- @peers}>
-              <button phx-click={hide_peers("##{@card.id}-peers")} class="block">{peer}</button>
+
+        <button
+          data-popover-target={"popover-trade-#{@card.id}"}
+          data-popover-placement="bottom"
+          type="button"
+          class="hover:text-slate-600 rounded-lg p-2 "
+        >
+          Trade
+        </button>
+
+        <div
+          data-popover
+          id={"popover-trade-#{@card.id}"}
+          role="tooltip"
+          class="absolute z-10 invisible inline-block w-fit text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-xs opacity-0 dark:text-gray-400 dark:bg-gray-800 dark:border-gray-600 p-2"
+        >
+          <div :for={peer <- @peers}>
+            <div class="px-3 py-2">
+              <button>{peer}</button>
             </div>
           </div>
+          <div data-popper-arrow></div>
         </div>
 
-        <div :if={@player_type == :freelancer} class="p-2">
-          <button>secret swap</button>
+        <div :if={@player_type == :freelancer}>
+          <button
+            data-popover-target={"popover-secret-swap-#{@card.id}"}
+            data-popover-placement="bottom"
+            type="button"
+            class="hover:text-slate-600  rounded-lg p-2 "
+          >
+            Secret Swap
+          </button>
+
+          <div
+            data-popover
+            id={"popover-secret-swap-#{@card.id}"}
+            role="tooltip"
+            class="absolute z-10 invisible inline-block w-fit text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-xs opacity-0 dark:text-gray-400 dark:bg-gray-800 dark:border-gray-600 p-2"
+          >
+            <div :for={secret_peer <- @secret_peers}>
+              <div class="px-3 py-2">
+                <button>{secret_peer}</button>
+              </div>
+            </div>
+            <div data-popper-arrow></div>
+          </div>
         </div>
       </div>
     </div>
@@ -104,6 +133,7 @@ defmodule ContractWeb.Molecules do
   attr :hand, :list
   attr :clients, :list
   attr :space, :map
+  attr :peers, :list
 
   def client_staging(assigns) do
     ~H"""

@@ -102,6 +102,7 @@ defmodule Contract.Factory do
           id: player.id,
           name: player.name,
           type: player.type,
+          score: player.score,
           hand: player.hand,
           other_staff: other_staff,
           pending_trades: pending_trades
@@ -127,6 +128,7 @@ defmodule Contract.Factory do
           id: player.id,
           type: player.type,
           name: player.name,
+          score: player.score,
           hand: player.hand,
           other_staff: other_staff,
           other_freelancers: other_freelancer,

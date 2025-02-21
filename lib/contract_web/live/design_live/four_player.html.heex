@@ -51,13 +51,19 @@
                 player_type={freelancer.type}
                 card={card}
                 peers={freelancer.other_staff}
+                secret_peers={freelancer.other_freelancers}
               />
             </div>
           </div>
         </div>
 
         <div class="mt-2">
-          <.client_staging id={freelancer.id} hand={freelancer.hand} space={%{count: 3}} />
+          <.client_staging
+            id={freelancer.id}
+            hand={freelancer.hand}
+            space={%{count: 3}}
+            peers={freelancer.other_freelancers}
+          />
         </div>
       </div>
     </div>

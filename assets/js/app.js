@@ -25,7 +25,9 @@ import "flowbite/dist/flowbite.phoenix.js";
 
 import { Draggable, Droppable } from "@shopify/draggable";
 import { ClientStaging } from "./client_staging";
-import { TooltipHook } from "./tooltip";
+import { Tooltip, TooltipHook } from "./tooltip";
+
+window.customElements.define("trade-tooltip", Tooltip);
 
 let Hooks = {
   ClientStaging,

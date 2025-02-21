@@ -3,6 +3,7 @@ defmodule Contract.Design.Player do
     :id,
     :name,
     :type,
+    :score,
     :hand,
     :other_staff,
     :other_freelancers,
