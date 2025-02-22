@@ -11,7 +11,7 @@
       <div
         :for={staff <- @state.staff_players}
         class="p-2 w-1/3 rounded-md border-2 border-gray-200 "
-        id=""
+        id={staff.id}
       >
         <div>
           <p class="block mb-2">{staff.name}</p>

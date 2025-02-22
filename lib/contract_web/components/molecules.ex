@@ -11,14 +11,15 @@ defmodule ContractWeb.Molecules do
     """
   end
 
+  # <div id="tooltip-default" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-xs opacity-0 tooltip dark:bg-gray-700">
+  #     Tooltip content
+  #     <div class="tooltip-arrow" data-popper-arrow></div>
+  # </div>
+
   def card_compact(assigns) do
     ~H"""
-    <div class="item flex flex-col">
-      <div
-        id={@id}
-        class=" w-fit bg-blue-400 flex items-center justify-center  border-slate-500 border-2 rounded-md overflow-clip"
-        phx-hook="TooltipHook"
-      >
+    <div class="item flex flex-col" data-card-id={@id}>
+      <div class="w-fit bg-blue-400 flex items-center justify-center  border-slate-500 border-2 rounded-md overflow-clip">
         <div class="">
           <p
             class="summary w-4 h-4 m-2 text-sm"
@@ -27,13 +28,7 @@ defmodule ContractWeb.Molecules do
             {shape_icon(@shape)}
           </p>
         </div>
-
-        <%!-- <div class="description invisible p-2 bg-slate-100">
-        <p class="m-2 text-3xl">{shape_icon(@shape)}</p>
-        <p class="text-sm">{Atom.to_string(@property)}</p>
-      </div> --%>
       </div>
-      <%!-- <p class="text-xs ">{Atom.to_string(@property)}</p> --%>
     </div>
     """
   end
@@ -137,24 +132,32 @@ defmodule ContractWeb.Molecules do
 
   def client_staging(assigns) do
     ~H"""
-    <section id={@id} class="border-t-2 pt-2 flex flex-row flex-wrap" phx-hook="ClientStaging">
-      <div class=" overflow-x-scroll ">
-        <div id="cards" class="container  flex flex-row flex-wrap gap-2">
-          <div :for={card <- @hand}>
-            <div class="dropzone  ">
-              <.card_compact id={card.id} shape={card.shape} property={card.property} />
+    <section
+      id={"staging-player-#{@id}"}
+      data-player-id={@id}
+      class="border-t-2 pt-2 flex flex-col flex-wrap"
+      phx-hook="ClientStaging"
+    >
+      <div class="flex flex-row flex-wrap gap-6">
+        <div class="staging w-fit  container   flex flex-row gap-2 overflow-x-scroll">
+          <div :for={space <- 1..@space.count} id={"staging-#{space}-#{@id}"}>
+            <div class="dropzone dropzone-a w-12 h-12 border-2 border-green-200 rounded-md "></div>
+          </div>
+        </div>
+        <div class="w-fit  overflow-x-scroll ">
+          <div class="container  flex flex-row flex-wrap gap-2">
+            <div :for={card <- @hand}>
+              <div class="dropzone  ">
+                <.card_compact id={card.id} shape={card.shape} property={card.property} />
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="container mt-2  flex flex-row gap-2 overflow-x-scroll">
-        <div :for={_ <- 1..@space.count} id="staging">
-          <div class="dropzone dropzone-a w-12 h-12 border-2 border-green-200 rounded-md "></div>
-        </div>
-      </div>
-
-      <button class="staging_submit mt-4 rounded-md bg-yellow-300 pl-2 pr-2">submit</button>
+      <button id={"submit_#{@id}"} class="mt-4 rounded-md bg-yellow-300 pl-2 pr-2">
+        submit
+      </button>
     </section>
     """
   end
