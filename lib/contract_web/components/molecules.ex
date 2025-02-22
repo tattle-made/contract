@@ -155,7 +155,7 @@ defmodule ContractWeb.Molecules do
         </div>
       </div>
 
-      <button id={"submit_#{@id}"} class="mt-4 rounded-md bg-yellow-300 pl-2 pr-2">
+      <button id={"submit_#{@id}"} class="mt-4 rounded-md bg-amber-500 pl-2 pr-2">
         submit
       </button>
     </section>
