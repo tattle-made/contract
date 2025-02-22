@@ -22,8 +22,6 @@ import { Socket } from "phoenix";
 import { LiveSocket } from "phoenix_live_view";
 import topbar from "../vendor/topbar";
 import "flowbite/dist/flowbite.phoenix.js";
-
-import { Draggable, Droppable } from "@shopify/draggable";
 import { ClientStaging } from "./client_staging";
 // import { Tooltip, TooltipHook } from "./tooltip";
 
@@ -46,11 +44,6 @@ let liveSocket = new LiveSocket("/live", Socket, {
 topbar.config({ barColors: { 0: "#29d" }, shadowColor: "rgba(0, 0, 0, .3)" });
 window.addEventListener("phx:page-loading-start", (_info) => topbar.show(300));
 window.addEventListener("phx:page-loading-stop", (_info) => topbar.hide());
-
-const droppable = new Droppable(document.querySelectorAll(".container"), {
-  draggable: ".item",
-  dropzone: ".dropzone",
-});
 
 // connect if there are any LiveViews on the page
 liveSocket.connect();
