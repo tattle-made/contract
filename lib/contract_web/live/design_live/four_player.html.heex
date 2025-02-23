@@ -30,7 +30,12 @@
             </div>
 
             <div class="mt-2">
-              <.client_staging id={staff.id} hand={staff.hand} space={%{count: 3}} />
+              <.client_staging
+                id={staff.id}
+                hand={staff.hand}
+                space={%{count: 3}}
+                clients={@state.clients}
+              />
             </div>
           </div>
         </div>
@@ -65,6 +70,7 @@
                 hand={freelancer.hand}
                 space={%{count: 3}}
                 peers={freelancer.other_freelancers}
+                clients={@state.clients}
               />
             </div>
           </div>
