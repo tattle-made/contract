@@ -24,6 +24,7 @@ defmodule Contract.Factory do
         name: NameGenerator.name(),
         password: "kabootar",
         players: [],
+        player_names: %{},
         roles: %{}
       },
       round: %EntityRound{},
@@ -90,9 +91,13 @@ defmodule Contract.Factory do
       |> Enum.map(&elem(&1, 1))
       |> Enum.filter(&EntityPlayer.staff?/1)
       |> Enum.map(fn player ->
+        # IEx.pry()
+
         other_staff =
           state_room.roles.staff
-          |> Enum.filter(&(&1 != player.name))
+          |> Enum.filter(&(&1 != player.id))
+          |> Enum.map(&state_players[&1])
+          |> Enum.map(&EntityPlayer.preview/1)
 
         pending_trades =
           state_trades
@@ -114,11 +119,17 @@ defmodule Contract.Factory do
       |> Enum.map(&elem(&1, 1))
       |> Enum.filter(&EntityPlayer.freelancer?/1)
       |> Enum.map(fn player ->
-        other_staff = state_room.roles.staff
+        other_staff =
+          state_room.roles.staff
+          |> Enum.filter(&(&1 != player.id))
+          |> Enum.map(&state_players[&1])
+          |> Enum.map(&EntityPlayer.preview/1)
 
         other_freelancer =
           state_room.roles.freelancer
-          |> Enum.filter(&(&1 != player.name))
+          |> Enum.filter(&(&1 != player.id))
+          |> Enum.map(&state_players[&1])
+          |> Enum.map(&EntityPlayer.preview/1)
 
         pending_trades =
           state_trades

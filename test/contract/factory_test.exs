@@ -1,5 +1,4 @@
 defmodule Contract.FactoryTest do
-  require IEx
   alias Contract.Entity.PlayerMap
   alias Contract.Factory
   import Contract.StateFixtures
@@ -26,6 +25,6 @@ defmodule Contract.FactoryTest do
 
     room_state = Factory.make_design_page(state)
 
-    IEx.pry()
+    # IEx.pry()
   end
 end

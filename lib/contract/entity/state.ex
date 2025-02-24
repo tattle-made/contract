@@ -1,4 +1,5 @@
 defmodule Contract.Entity.State do
+  require IEx
   alias Contract.Entity.State
   alias Contract.Entity.PlayerMap
   alias Contract.Factory
@@ -13,10 +14,20 @@ defmodule Contract.Entity.State do
   defstruct [:room, :round, :players, :trades, :reports, :logs]
 
   def join_room(%State{} = state, player_name, password) do
+    player = Player.new(name: player_name)
+
     case state.room.password == password do
       true ->
         current_players = state.room.players
-        %{state | room: %{state.room | players: current_players ++ [player_name]}}
+
+        %{
+          state
+          | room: %{
+              state.room
+              | players: current_players ++ [player.id],
+                player_names: Map.put(state.room.player_names, player.id, player.name)
+            }
+        }
 
       false ->
         raise IncorrectPasswordException
@@ -32,8 +43,12 @@ defmodule Contract.Entity.State do
 
     state = %{state | room: %{room | roles: %{freelancer: freelancers, staff: staff}}}
 
-    freelancer_players = freelancers |> Enum.map(&Player.new(&1, :freelancer))
-    staff_players = staff |> Enum.map(&Player.new(&1, :staff))
+    player_names = state.room.player_names
+
+    freelancer_players =
+      freelancers |> Enum.map(&Player.new(id: &1, name: player_names[&1], type: :freelancer))
+
+    staff_players = staff |> Enum.map(&Player.new(id: &1, name: player_names[&1], type: :staff))
 
     all =
       (freelancer_players ++ staff_players)
@@ -43,7 +58,7 @@ defmodule Contract.Entity.State do
         Map.put(acc, player.id, player)
       end)
 
-    %{state | players: all}
+    %{state | players: all, room: %{state.room | player_names: nil}}
   end
 
   def first_round(%State{} = state) do

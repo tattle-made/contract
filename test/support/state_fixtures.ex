@@ -1,5 +1,4 @@
 defmodule Contract.StateFixtures do
-  require IEx
   alias Contract.Entity.Client
   alias Contract.Entity.PlayerMap
   alias Contract.Factory
@@ -19,6 +18,7 @@ defmodule Contract.StateFixtures do
         name: "happy-eagle-23",
         password: "kabootar",
         players: [],
+        player_names: %{},
         roles: %{}
       },
       round: %Round{},
@@ -29,10 +29,20 @@ defmodule Contract.StateFixtures do
   end
 
   def join_room(%State{} = state, player_name, password) do
+    player = Player.new(name: player_name)
+
     case state.room.password == password do
       true ->
         current_players = state.room.players
-        %{state | room: %{state.room | players: current_players ++ [player_name]}}
+
+        %{
+          state
+          | room: %{
+              state.room
+              | players: current_players ++ [player.id],
+                player_names: Map.put(state.room.player_names, player.id, player.name)
+            }
+        }
 
       false ->
         raise IncorrectPasswordException
@@ -48,8 +58,12 @@ defmodule Contract.StateFixtures do
 
     state = %{state | room: %{room | roles: %{freelancer: freelancers, staff: staff}}}
 
-    freelancer_players = freelancers |> Enum.map(&Player.new(&1, :freelancer))
-    staff_players = staff |> Enum.map(&Player.new(&1, :staff))
+    player_names = state.room.player_names
+
+    freelancer_players =
+      freelancers |> Enum.map(&Player.new(id: &1, name: player_names[&1], type: :freelancer))
+
+    staff_players = staff |> Enum.map(&Player.new(id: &1, name: player_names[&1], type: :staff))
 
     all =
       (freelancer_players ++ staff_players)
@@ -59,7 +73,7 @@ defmodule Contract.StateFixtures do
         Map.put(acc, player.id, player)
       end)
 
-    %{state | players: all}
+    %{state | players: all, room: %{state.room | player_names: nil}}
   end
 
   def first_round(%State{} = state) do

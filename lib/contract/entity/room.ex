@@ -1,6 +1,6 @@
 defmodule Contract.Entity.Room do
   alias Contract.Entity.Player
-  defstruct [:id, :state, :name, :password, :players, :roles]
+  defstruct [:id, :state, :name, :password, :players, :player_names, :roles]
 
   @type role :: :freelancer | :staff
   @type t :: %__MODULE__{

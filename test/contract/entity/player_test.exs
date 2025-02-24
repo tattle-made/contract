@@ -5,7 +5,7 @@ defmodule Contract.Entity.PlayerTest do
 
   describe "entity" do
     test "hand management" do
-      player = Player.new("adhiraj", :staff)
+      player = Player.new(name: "adhiraj", type: :staff)
       assert length(player.hand) == 0
 
       card = %Card{id: "card_acxasdf", shape: :star, property: :team_memo}

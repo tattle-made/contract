@@ -1,11 +1,9 @@
 defmodule Contract.Entity.StateTest do
-  require IEx
   alias Contract.Entity.PlayerMap
   alias Contract.Entity.Room.IncorrectPasswordException
   alias Contract.StateFixtures
   use ExUnit.Case
 
-  @tag timeout: :infinity
   describe "state changes" do
     import Contract.StateFixtures
 
@@ -68,6 +66,29 @@ defmodule Contract.Entity.StateTest do
       # submit to client
 
       # report HR
+    end
+  end
+
+  @tag timeout: :infinity
+  describe "temp" do
+    import Contract.StateFixtures
+
+    setup do
+      :rand.seed(:exsss, {1, 8, 12})
+      state = StateFixtures.four_player_game()
+
+      %{state: state}
+    end
+
+    test "one round game happy path", %{state: state} do
+      state =
+        state
+        |> join_room("adhiraj", "kabootar")
+        |> join_room("aman", "kabootar")
+        |> join_room("farah", "kabootar")
+        |> join_room("krys", "kabootar")
+
+      # IEx.pry()
     end
   end
 end

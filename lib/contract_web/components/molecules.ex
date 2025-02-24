@@ -67,9 +67,9 @@ defmodule ContractWeb.Molecules do
           <div :for={peer <- @peers}>
             <div class="px-3 py-2">
               <button phx-click={
-                JS.push("open-trade", value: %{card_id: @card.id, from_id: @id, to_id: peer})
+                JS.push("open-trade", value: %{card_id: @card.id, from_id: @id, to_id: peer.id})
               }>
-                {peer}
+                {peer.name}
               </button>
             </div>
           </div>
@@ -183,7 +183,7 @@ defmodule ContractWeb.Molecules do
                 detail: %{from_id: @id, client_id: client.id}
               )
             }>
-              {client.id}
+              {client.name}
             </button>
           </div>
         </div>

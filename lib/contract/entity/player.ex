@@ -12,10 +12,14 @@ defmodule Contract.Entity.Player do
           score: integer()
         }
 
-  def new(name, type) do
+  def new(opts \\ []) do
+    id = Keyword.get(opts, :id, UXID.generate!(prefix: "player", size: :small))
+    name = Keyword.get(opts, :name, "default_naam")
+    type = Keyword.get(opts, :type)
+
     %Player{
       type: type,
-      id: UXID.generate!(prefix: "player", size: :small),
+      id: id,
       name: name,
       hand: [],
       kpi: nil,
@@ -44,6 +48,10 @@ defmodule Contract.Entity.Player do
 
   def staff?(%Player{} = player) do
     player.type == :staff
+  end
+
+  def preview(%Player{} = player) do
+    %{id: player.id, name: player.name}
   end
 end
 
