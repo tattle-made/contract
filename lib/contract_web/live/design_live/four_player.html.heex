@@ -81,7 +81,7 @@
       <div class="rounded-md overflow-clip border-2 border-gray-100">
         <h1 class="p-2 bg-amber-200">Clients</h1>
         <div :for={client <- @state.clients} class="p-2 border-b-2 border-gray-200">
-          <p>{client.id}</p>
+          <p>{client.name}</p>
           <div class="flex flex-row gap-2">
             <div :for={card <- client.requirements}>
               <.card_compact id={card.id} shape={card.shape} property={card.property} />

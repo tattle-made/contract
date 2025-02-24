@@ -94,7 +94,7 @@ defmodule Contract.Factory do
         # IEx.pry()
 
         other_staff =
-          state_room.roles.staff
+          state_room.players
           |> Enum.filter(&(&1 != player.id))
           |> Enum.map(&state_players[&1])
           |> Enum.map(&EntityPlayer.preview/1)
