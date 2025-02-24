@@ -94,7 +94,7 @@ defmodule ContractWeb.Molecules do
           >
             <div :for={secret_peer <- @secret_peers}>
               <div class="px-3 py-2">
-                <button>{secret_peer}</button>
+                <button>{secret_peer.name}</button>
               </div>
             </div>
             <div data-popper-arrow></div>

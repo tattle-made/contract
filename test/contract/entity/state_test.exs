@@ -9,7 +9,7 @@ defmodule Contract.Entity.StateTest do
 
     setup do
       :rand.seed(:exsss, {1, 8, 12})
-      state = StateFixtures.four_player_game()
+      state = StateFixtures.new_game()
 
       %{state: state}
     end
@@ -75,7 +75,7 @@ defmodule Contract.Entity.StateTest do
 
     setup do
       :rand.seed(:exsss, {1, 8, 12})
-      state = StateFixtures.four_player_game()
+      state = StateFixtures.new_game()
 
       %{state: state}
     end

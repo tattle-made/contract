@@ -5,11 +5,18 @@ defmodule Contract.FactoryTest do
   use ExUnit.Case
 
   @tag timeout: :infinity
+  test "make_design_room/1" do
+    :rand.seed(:exsss, {1, 8, 12})
+
+    state = Factory.make_design_room("room_bcn23dn")
+    IO.inspect(state)
+  end
+
   test "make_design_page/1" do
     :rand.seed(:exsss, {1, 8, 12})
 
     state =
-      four_player_game()
+      new_game()
       |> join_room("adhiraj", "kabootar")
       |> join_room("aman", "kabootar")
       |> join_room("farah", "kabootar")

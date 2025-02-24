@@ -38,7 +38,7 @@ defmodule Contract.Entity.State do
     state = %{state | room: %{state.room | state: :running}}
     room = state.room
 
-    freelancer_count = Integer.floor_div(length(room.players), 4)
+    freelancer_count = (length(room.players) / 3) |> round
     {freelancers, staff} = room.players |> Enum.shuffle() |> Enum.split(freelancer_count)
 
     state = %{state | room: %{room | roles: %{freelancer: freelancers, staff: staff}}}

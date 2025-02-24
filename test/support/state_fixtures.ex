@@ -11,7 +11,7 @@ defmodule Contract.StateFixtures do
   alias Contract.Entity.Room
   alias Contract.Entity.State
 
-  def four_player_game() do
+  def new_game() do
     %State{
       room: %Room{
         state: :waiting,

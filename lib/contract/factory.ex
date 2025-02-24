@@ -36,6 +36,7 @@ defmodule Contract.Factory do
     |> EntityState.join_room("aman", "kabootar")
     |> EntityState.join_room("farah", "kabootar")
     |> EntityState.join_room("krys", "kabootar")
+    |> EntityState.join_room("denny", "kabootar")
     |> EntityState.start_game()
     |> EntityState.first_round()
   end
