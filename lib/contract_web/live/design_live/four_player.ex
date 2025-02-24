@@ -35,4 +35,16 @@ defmodule ContractWeb.DesignLive.FourPlayer do
 
     {:noreply, socket}
   end
+
+  def handle_event("open-trade", unsigned_params, socket) do
+    IO.inspect(unsigned_params, label: "OPEN TRADE")
+
+    {:noreply, socket}
+  end
+
+  def handle_event("submit-to-client", unsigned_params, socket) do
+    IO.inspect(unsigned_params, label: "SUBMIT TO CLIENT")
+
+    {:noreply, socket}
+  end
 end
