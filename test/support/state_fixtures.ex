@@ -102,7 +102,7 @@ defmodule Contract.StateFixtures do
         players = state.players
 
         open_player = players[open_trade.from]
-        open_card = PlayerMap.card_in_hand(open_player, open_trade.card_id)
+        open_card = PlayerMap.card_in_hand(open_player, open_trade.card.id)
         accepting_player = players[from]
         accepting_card = PlayerMap.card_in_hand(accepting_player, card_id)
 

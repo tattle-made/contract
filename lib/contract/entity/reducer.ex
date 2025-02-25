@@ -44,4 +44,12 @@ defmodule Contract.Entity.Reducer do
         %{state | players: players, trades: trades}
     end
   end
+
+  def reduce(%State{} = state, %Action{type: :secret_trade} = action) do
+    %{from_id: from_id, to_id: to_id, card_id: card_id} = action.payload
+    card = state.players[from_id].hand |> Enum.find(&(&1.id == card_id))
+
+    trade = %Trade{type: :secret, card: card, from: from_id, to: to_id}
+    %{state | trades: state.trades ++ [trade]}
+  end
 end

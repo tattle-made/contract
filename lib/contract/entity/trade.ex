@@ -2,7 +2,7 @@ defmodule Contract.Entity.Trade do
   alias Contract.Entity.Card
   defstruct [:type, :card, :from, :to]
 
-  @type trade_type :: :open | :accept
+  @type trade_type :: :open | :secret
 
   @type t :: %__MODULE__{
           type: trade_type(),

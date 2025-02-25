@@ -33,6 +33,6 @@ defmodule Contract.FactoryTest do
 
     room_state = Factory.make_design_page(state)
 
-    IEx.pry()
+    # IEx.pry()
   end
 end

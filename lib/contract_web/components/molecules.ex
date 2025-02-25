@@ -77,28 +77,22 @@ defmodule ContractWeb.Molecules do
         </div>
 
         <div :if={@player_type == :freelancer}>
-          <button
-            data-popover-target={"popover-secret-swap-#{@card.id}"}
-            data-popover-placement="bottom"
-            type="button"
-            class="hover:text-slate-600  rounded-lg p-2 "
-          >
-            Secret Swap
-          </button>
-
-          <div
-            data-popover
-            id={"popover-secret-swap-#{@card.id}"}
-            role="tooltip"
-            class="absolute z-10 invisible inline-block w-fit text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-xs opacity-0 dark:text-gray-400 dark:bg-gray-800 dark:border-gray-600 p-2"
-          >
-            <div :for={secret_peer <- @secret_peers}>
-              <div class="px-3 py-2">
-                <button>{secret_peer.name}</button>
+          <.popover id={"popover-secret-swap-#{@id}"}>
+            <:label>Secret Swap</:label>
+            <:options>
+              <div :for={secret_peer <- @secret_peers}>
+                <div class="px-3 py-2">
+                  <button phx-click={
+                    JS.push("secret-trade",
+                      value: %{card_id: @card.id, from_id: @id, to_id: secret_peer.id}
+                    )
+                  }>
+                    {secret_peer.name}
+                  </button>
+                </div>
               </div>
-            </div>
-            <div data-popper-arrow></div>
-          </div>
+            </:options>
+          </.popover>
         </div>
       </div>
     </div>

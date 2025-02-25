@@ -144,6 +144,7 @@ defmodule Contract.Factory do
           |> Enum.filter(&(&1.to == player.id))
           |> Enum.map(fn trade ->
             %{
+              type: trade.type,
               card: trade.card,
               from: EntityPlayer.preview(state.players[trade.from]),
               to: EntityPlayer.preview(state.players[trade.to])

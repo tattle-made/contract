@@ -47,6 +47,16 @@ defmodule ContractWeb.DesignLive.FourPlayer do
     {:noreply, socket}
   end
 
+  def handle_event("secret-trade", params, socket) do
+    room_gen = socket.assigns.room_gen
+    action = Action.secret_trade(params)
+    state = GenServer.call(room_gen, action)
+    room_state = Factory.make_design_page(state)
+    socket = socket |> assign(:state, room_state)
+
+    {:noreply, socket}
+  end
+
   def handle_event("submit-to-client", unsigned_params, socket) do
     IO.inspect(unsigned_params, label: "SUBMIT TO CLIENT")
 

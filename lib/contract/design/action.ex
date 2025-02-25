@@ -1,4 +1,5 @@
 defmodule Contract.Design.Action do
+  alias Contract.Design.Action.SecretTrade
   alias Contract.Design.Action.AcceptTrade
   alias Contract.Design.Action
   alias Contract.Design.Action.OpenTrade
@@ -31,6 +32,18 @@ defmodule Contract.Design.Action do
 
     %Action{
       type: :accept_trade,
+      payload: action
+    }
+  end
+
+  def secret_trade(attrs) do
+    action =
+      %SecretTrade{}
+      |> SecretTrade.changeset(attrs)
+      |> apply_changes()
+
+    %Action{
+      type: :secret_trade,
       payload: action
     }
   end
