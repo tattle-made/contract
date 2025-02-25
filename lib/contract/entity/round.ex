@@ -24,14 +24,6 @@ defmodule Contract.Entity.Round do
   end
 
   def client(%Round{} = round, client_id) do
-    # case round.clients do
-    #   %Client{} = client ->
-    #     if client.id == client_id, do: client, else: raise(ClientNotFound)
-
-    #   clients when is_list(clients) ->
-    #     client = clients[client_id]
-    #     if client.id == client_id, do: client, else: raise(ClientNotFound)
-    # end
     client = Enum.find(round.clients, &(&1.id == client_id))
     if client.id == client_id, do: client, else: raise(ClientNotFound)
   end
