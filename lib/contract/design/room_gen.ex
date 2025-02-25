@@ -40,6 +40,12 @@ defmodule Contract.Design.RoomGen do
   end
 
   @impl true
+  def handle_call(%Action{type: :submit_to_client} = action, _from, state) do
+    new_state = Reducer.reduce(state, action)
+    {:reply, new_state, new_state}
+  end
+
+  @impl true
   def handle_info(msg, state) do
     IO.inspect("msg in genserver #{msg}")
     {:noreply, state}

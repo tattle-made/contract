@@ -32,7 +32,7 @@ defmodule Contract.Entity.Round do
     #     client = clients[client_id]
     #     if client.id == client_id, do: client, else: raise(ClientNotFound)
     # end
-    client = round.clients[client_id]
+    client = Enum.find(round.clients, &(&1.id == client_id))
     if client.id == client_id, do: client, else: raise(ClientNotFound)
   end
 end

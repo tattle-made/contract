@@ -57,8 +57,13 @@ defmodule ContractWeb.DesignLive.FourPlayer do
     {:noreply, socket}
   end
 
-  def handle_event("submit-to-client", unsigned_params, socket) do
-    IO.inspect(unsigned_params, label: "SUBMIT TO CLIENT")
+  def handle_event("submit-to-client", params, socket) do
+    room_gen = socket.assigns.room_gen
+    # IEx.pry()
+    action = Action.submit_to_client(params)
+    state = GenServer.call(room_gen, action)
+    room_state = Factory.make_design_page(state)
+    socket = socket |> assign(:state, room_state)
 
     {:noreply, socket}
   end

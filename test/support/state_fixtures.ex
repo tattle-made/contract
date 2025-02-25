@@ -134,7 +134,8 @@ defmodule Contract.StateFixtures do
     player = state.players[player_id]
 
     players =
-      Enum.reduce(cards, state.players, fn card, players ->
+      Enum.reduce(cards, state.players, fn card_id, players ->
+        card = PlayerMap.card_in_hand(players[player.id], card_id)
         PlayerMap.remove_from_hand(players, player.id, card)
       end)
 

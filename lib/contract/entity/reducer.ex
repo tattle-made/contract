@@ -4,6 +4,7 @@ defmodule Contract.Entity.Reducer do
   alias Contract.Entity.Trade
   alias Contract.Design.Action
   alias Contract.Entity.State
+  require IEx
 
   def reduce(%State{} = state, %Action{type: :open_trade} = action) do
     %{from_id: from_id, to_id: to_id, card_id: card_id} = action.payload
@@ -51,5 +52,37 @@ defmodule Contract.Entity.Reducer do
 
     trade = %Trade{type: :secret, card: card, from: from_id, to: to_id}
     %{state | trades: state.trades ++ [trade]}
+  end
+
+  def reduce(%State{} = state, %Action{type: :submit_to_client, payload: payload}) do
+    %{from_id: from_id, card_ids: card_ids, client_id: client_id} = payload
+
+    cards =
+      card_ids
+      |> Enum.map(fn card_id -> PlayerMap.card_in_hand(state.players[from_id], card_id) end)
+
+    case State.can_submit_to_client(state, cards, client_id) do
+      true ->
+        # update player score
+
+        # remove cards from player's hands
+        player = state.players[from_id]
+
+        players =
+          Enum.reduce(card_ids, state.players, fn card_id, players ->
+            card = PlayerMap.card_in_hand(players[player.id], card_id)
+            PlayerMap.remove_from_hand(players, player.id, card)
+          end)
+
+        # remove client from round
+        client = Enum.find(state.round.clients, &(&1.id == client_id))
+        clients = state.round.clients |> List.delete(client)
+        round = %{state.round | clients: clients}
+
+        %{state | players: players, round: round}
+
+      false ->
+        state
+    end
   end
 end

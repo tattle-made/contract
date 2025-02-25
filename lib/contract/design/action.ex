@@ -1,4 +1,5 @@
 defmodule Contract.Design.Action do
+  alias Contract.Design.Action.SubmitToClient
   alias Contract.Design.Action.SecretTrade
   alias Contract.Design.Action.AcceptTrade
   alias Contract.Design.Action
@@ -44,6 +45,18 @@ defmodule Contract.Design.Action do
 
     %Action{
       type: :secret_trade,
+      payload: action
+    }
+  end
+
+  def submit_to_client(attrs) do
+    action =
+      %SubmitToClient{}
+      |> SubmitToClient.changeset(attrs)
+      |> apply_changes()
+
+    %Action{
+      type: :submit_to_client,
       payload: action
     }
   end

@@ -153,36 +153,27 @@ defmodule ContractWeb.Molecules do
         </div>
       </div>
 
-      <button
-        id={"submit_#{@id}"}
-        data-popover-target={"popover_submit_#{@id}"}
-        data-popover-placement="bottom"
-        type="button"
-        class="mt-4 rounded-md bg-amber-500 pl-2 pr-2"
-      >
-        Submit To
-      </button>
-
-      <div
-        data-popover
-        id={"popover_submit_#{@id}"}
-        role="tooltip"
-        class="absolute z-10 invisible inline-block w-fit text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-xs opacity-0 dark:text-gray-400 dark:bg-gray-800 dark:border-gray-600 p-2"
-      >
-        <div :for={client <- @clients}>
-          <div class="px-3 py-2">
-            <button phx-click={
-              JS.dispatch("contract:click",
-                to: "#submit_#{@id}",
-                detail: %{from_id: @id, client_id: client.id}
-              )
-            }>
-              {client.name}
-            </button>
+      <.popover id={"popover_submit#{@id}" }>
+        <:label>
+          <button id={"submit_#{@id}"}>
+            Submit to
+          </button>
+        </:label>
+        <:options>
+          <div :for={client <- @clients}>
+            <div class="px-3 py-2">
+              <button phx-click={
+                JS.dispatch("contract:click",
+                  to: "#submit_#{@id}",
+                  detail: %{from_id: @id, client_id: client.id}
+                )
+              }>
+                {client.name}
+              </button>
+            </div>
           </div>
-        </div>
-        <div data-popper-arrow></div>
-      </div>
+        </:options>
+      </.popover>
     </section>
     """
   end
@@ -193,14 +184,13 @@ defmodule ContractWeb.Molecules do
 
   def popover(assigns) do
     ~H"""
-    <button
+    <div
       data-popover-target={@id}
       data-popover-placement="bottom"
-      type="button"
       class="hover:text-slate-600 rounded-lg p-2 "
     >
       {render_slot(@label)}
-    </button>
+    </div>
 
     <div
       data-popover
