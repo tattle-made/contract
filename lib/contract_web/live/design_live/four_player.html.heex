@@ -37,6 +37,50 @@
                 clients={@state.clients}
               />
             </div>
+
+            <div class="border-t-2 border-gray-200 mt-2">
+              <h1>Pending Trades</h1>
+              <div class="p-2">
+                <div :for={trade <- staff.pending_trades}>
+                  <div class="flex flex-row gap-2">
+                    <div>
+                      <.card_compact
+                        id={trade.card.id}
+                        shape={trade.card.shape}
+                        property={trade.card.property}
+                      />
+                      <p>{trade.from.name}</p>
+                    </div>
+                    <.popover id={"accept-popover-#{trade.card.id}"}>
+                      <:label>
+                        Accept With
+                      </:label>
+                      <:options>
+                        <div class="flex flex-row gap-2">
+                          <div :for={card <- staff.hand}>
+                            <button phx-click={
+                              JS.push("accept-trade",
+                                value: %{
+                                  from_id: staff.id,
+                                  to_id: trade.from.id,
+                                  card_id: card.id
+                                }
+                              )
+                            }>
+                              <.card_compact
+                                id={card.id}
+                                shape={card.shape}
+                                property={card.property}
+                              />
+                            </button>
+                          </div>
+                        </div>
+                      </:options>
+                    </.popover>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -72,6 +116,49 @@
                 peers={freelancer.other_freelancers}
                 clients={@state.clients}
               />
+            </div>
+            <div>
+              <h1>Pending Trades</h1>
+              <div class="p-2">
+                <div :for={trade <- freelancer.pending_trades}>
+                  <div class="flex flex-row gap-2">
+                    <div>
+                      <.card_compact
+                        id={trade.card.id}
+                        shape={trade.card.shape}
+                        property={trade.card.property}
+                      />
+                      <p>{trade.from.name}</p>
+                    </div>
+                    <.popover id={"accept-popover-#{trade.card.id}"}>
+                      <:label>
+                        Accept With
+                      </:label>
+                      <:options>
+                        <div class="flex flex-row gap-2">
+                          <div :for={card <- freelancer.hand}>
+                            <button phx-click={
+                              JS.push("accept-trade",
+                                value: %{
+                                  from_id: freelancer.id,
+                                  to_id: trade.from.id,
+                                  card_id: card.id
+                                }
+                              )
+                            }>
+                              <.card_compact
+                                id={card.id}
+                                shape={card.shape}
+                                property={card.property}
+                              />
+                            </button>
+                          </div>
+                        </div>
+                      </:options>
+                    </.popover>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

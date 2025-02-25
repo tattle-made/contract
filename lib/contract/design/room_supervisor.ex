@@ -63,4 +63,16 @@ defmodule Contract.Design.RoomSupervisor do
       _ -> {:error, :not_found}
     end
   end
+
+  def room_gen(room_id) do
+    case room_gen!(room_id) do
+      {:ok, pid} ->
+        pid
+
+      {:error, :not_found} ->
+        room_reserved = reserve(room_id)
+        {:ok, pid} = room_gen!(room_reserved.id)
+        pid
+    end
+  end
 end

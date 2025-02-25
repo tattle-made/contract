@@ -3,15 +3,16 @@ defmodule Contract.FactoryTest do
   alias Contract.Factory
   import Contract.StateFixtures
   use ExUnit.Case
+  require IEx
 
   @tag timeout: :infinity
   test "make_design_room/1" do
     :rand.seed(:exsss, {1, 8, 12})
 
     state = Factory.make_design_room("room_bcn23dn")
-    IO.inspect(state)
   end
 
+  @tag timeout: :infinity
   test "make_design_page/1" do
     :rand.seed(:exsss, {1, 8, 12})
 
@@ -32,6 +33,6 @@ defmodule Contract.FactoryTest do
 
     room_state = Factory.make_design_page(state)
 
-    # IEx.pry()
+    IEx.pry()
   end
 end

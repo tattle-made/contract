@@ -192,4 +192,31 @@ defmodule ContractWeb.Molecules do
     </section>
     """
   end
+
+  attr :id, :string, required: true
+  slot :label, required: true
+  slot :options
+
+  def popover(assigns) do
+    ~H"""
+    <button
+      data-popover-target={@id}
+      data-popover-placement="bottom"
+      type="button"
+      class="hover:text-slate-600 rounded-lg p-2 "
+    >
+      {render_slot(@label)}
+    </button>
+
+    <div
+      data-popover
+      id={@id}
+      role="tooltip"
+      class="absolute z-10 invisible inline-block w-fit text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-xs opacity-0 dark:text-gray-400 dark:bg-gray-800 dark:border-gray-600 p-2"
+    >
+      {render_slot(@options) || "Options"}
+      <div data-popper-arrow></div>
+    </div>
+    """
+  end
 end

@@ -103,6 +103,13 @@ defmodule Contract.Factory do
         pending_trades =
           state_trades
           |> Enum.filter(&(&1.to == player.id))
+          |> Enum.map(fn trade ->
+            %{
+              card: trade.card,
+              from: state.players[trade.from],
+              to: state.players[trade.to]
+            }
+          end)
 
         %Player{
           id: player.id,
@@ -135,6 +142,13 @@ defmodule Contract.Factory do
         pending_trades =
           state_trades
           |> Enum.filter(&(&1.to == player.id))
+          |> Enum.map(fn trade ->
+            %{
+              card: trade.card,
+              from: EntityPlayer.preview(state.players[trade.from]),
+              to: EntityPlayer.preview(state.players[trade.to])
+            }
+          end)
 
         %Player{
           id: player.id,

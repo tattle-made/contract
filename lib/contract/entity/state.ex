@@ -65,41 +65,6 @@ defmodule Contract.Entity.State do
     %{state | round: Round.new(2, &Factory.make_random_card_entity/0)}
   end
 
-  def open_trade(%State{} = state, card_id, from, to) do
-    trade = %Trade{type: :open, card_id: card_id, from: from, to: to}
-    %{state | trades: state.trades ++ [trade]}
-  end
-
-  def accept_trade(%State{} = state, card_id, from, to) do
-    case Enum.find(state.trades, nil, &(&1.from == to && &1.to == from)) do
-      nil ->
-        raise NoOpenTrade
-
-      %Trade{} = open_trade ->
-        #  delete open trade
-        trades =
-          state.trades
-          |> List.delete(open_trade)
-
-        # swap cards in player's hands
-        players = state.players
-
-        open_player = players[open_trade.from]
-        open_card = PlayerMap.card_in_hand(open_player, open_trade.card_id)
-        accepting_player = players[from]
-        accepting_card = PlayerMap.card_in_hand(accepting_player, card_id)
-
-        players =
-          players
-          |> PlayerMap.remove_from_hand(open_player.id, open_card)
-          |> PlayerMap.add_to_hand(open_player.id, accepting_card)
-          |> PlayerMap.remove_from_hand(accepting_player.id, accepting_card)
-          |> PlayerMap.add_to_hand(accepting_player.id, open_card)
-
-        %{state | players: players, trades: trades}
-    end
-  end
-
   def can_submit_to_client(%State{} = state, cards, client_id) do
     client = Round.client(state.round, client_id)
     client_requirements = client.requirements |> Enum.map(&Card.value/1)

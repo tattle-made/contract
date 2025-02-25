@@ -1,9 +1,11 @@
 defmodule ContractWeb.DesignLive.FourPlayer do
   import ContractWeb.Molecules
+  require IEx
+  alias Contract.Entity.Reducer
+  alias Contract.Design.Action
+  alias Contract.Design.RoomGen
   alias Contract.Factory
   alias Contract.Design.RoomSupervisor
-  alias Contract.Entity.Card
-  alias Contract.Entity.Client
 
   use ContractWeb, :live_view
   use ContractWeb, :html
@@ -13,20 +15,9 @@ defmodule ContractWeb.DesignLive.FourPlayer do
   end
 
   def handle_params(%{"room_id" => room_id}, _uri, socket) do
-    pid =
-      case RoomSupervisor.room_gen!(room_id) do
-        {:ok, pid} ->
-          pid
-
-        {:error, :not_found} ->
-          room_reserved = RoomSupervisor.reserve(room_id)
-          {:ok, pid} = RoomSupervisor.room_gen!(room_reserved.id)
-          pid
-      end
-
-    game_state = :sys.get_state(pid)
+    pid = RoomSupervisor.room_gen(room_id)
+    game_state = RoomGen.state(pid)
     room_state = Factory.make_design_page(game_state)
-    assign(socket, :state, room_state)
 
     socket =
       socket
@@ -36,8 +27,22 @@ defmodule ContractWeb.DesignLive.FourPlayer do
     {:noreply, socket}
   end
 
-  def handle_event("open-trade", unsigned_params, socket) do
-    IO.inspect(unsigned_params, label: "OPEN TRADE")
+  def handle_event("open-trade", params, socket) do
+    room_gen = socket.assigns.room_gen
+    action = Action.open_trade(params)
+    state = GenServer.call(room_gen, action)
+    room_state = Factory.make_design_page(state)
+    socket = socket |> assign(:state, room_state)
+
+    {:noreply, socket}
+  end
+
+  def handle_event("accept-trade", params, socket) do
+    room_gen = socket.assigns.room_gen
+    action = Action.accept_trade(params)
+    state = GenServer.call(room_gen, action)
+    room_state = Factory.make_design_page(state)
+    socket = socket |> assign(:state, room_state)
 
     {:noreply, socket}
   end

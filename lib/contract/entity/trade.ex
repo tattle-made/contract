@@ -1,11 +1,12 @@
 defmodule Contract.Entity.Trade do
-  defstruct [:type, :card_id, :from, :to]
+  alias Contract.Entity.Card
+  defstruct [:type, :card, :from, :to]
 
   @type trade_type :: :open | :accept
 
   @type t :: %__MODULE__{
           type: trade_type(),
-          card_id: String.t(),
+          card: Card.t(),
           from: String.t(),
           to: String.t()
         }

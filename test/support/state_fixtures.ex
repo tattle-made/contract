@@ -81,7 +81,9 @@ defmodule Contract.StateFixtures do
   end
 
   def open_trade(%State{} = state, card_id, from, to) do
-    trade = %Trade{type: :open, card_id: card_id, from: from, to: to}
+    card = state.players[from].hand |> Enum.find(&(&1.id == card_id))
+
+    trade = %Trade{type: :open, card: card, from: from, to: to}
     %{state | trades: state.trades ++ [trade]}
   end
 

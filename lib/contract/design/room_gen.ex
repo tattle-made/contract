@@ -1,4 +1,6 @@
 defmodule Contract.Design.RoomGen do
+  alias Contract.Entity.Reducer
+  alias Contract.Design.Action
   alias Contract.Factory
   use GenServer
 
@@ -15,9 +17,20 @@ defmodule Contract.Design.RoomGen do
     {:ok, state}
   end
 
+  def state(pid) do
+    :sys.get_state(pid)
+  end
+
   @impl true
-  def handle_cast({:open_trade}, state) do
-    {:noreply, state}
+  def handle_call(%Action{type: :open_trade} = action, _from, state) do
+    new_state = Reducer.reduce(state, action)
+    {:reply, new_state, new_state}
+  end
+
+  @impl true
+  def handle_call(%Action{type: :accept_trade} = action, _from, state) do
+    new_state = Reducer.reduce(state, action)
+    {:reply, new_state, new_state}
   end
 
   @impl true
