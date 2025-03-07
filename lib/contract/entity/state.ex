@@ -1,5 +1,6 @@
 defmodule Contract.Entity.State do
   require IEx
+  alias Contract.Entity.Report
   alias Contract.Entity.State
   alias Contract.Entity.PlayerMap
   alias Contract.Factory
@@ -94,25 +95,30 @@ defmodule Contract.Entity.State do
     %{state | players: players, round: round}
   end
 
-  def add_report(%State{} = state, player_id) do
-    player = state.players[player_id]
+  def add_report(%State{} = state, from_id, against_id) do
+    player = state.players[against_id]
+    is_freelancer = Player.freelancer?(player)
 
-    case Player.freelancer?(player) do
-      true ->
-        total_players = length(state.players)
-        report = state.reports[player_id]
-        # todo add complaints
-        report = %{report | by: report.by ++ [player_id]}
+    total_players = length(Map.keys(state.players))
 
-        total_complaints = length(report.by)
+    report =
+      case state.reports[against_id] do
+        nil -> %Report{}
+        report -> report
+      end
 
-        report =
-          if total_complaints > total_players / 2, do: %{report | can_remove: true}, else: report
+    # todo add complaints
 
-        # report = %{state.report | reports: %{} }
+    report = %{report | by: report.by ++ [from_id], valid: is_freelancer}
 
-        %{state | reports: report}
-    end
+    total_complaints = length(report.by)
+
+    report =
+      if total_complaints > total_players / 2,
+        do: %{report | can_remove: true},
+        else: %{report | can_remove: false}
+
+    %{state | reports: Map.put(state.reports, against_id, report)}
   end
 
   def maybe_punish_freelancer(%State{} = state) do

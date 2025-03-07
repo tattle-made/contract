@@ -1,4 +1,7 @@
 defmodule Contract.Entity.StateTest do
+  alias Contract.Entity.Report
+  alias Contract.Entity.Player
+  alias Contract.Entity.State
   alias Contract.Entity.PlayerMap
   alias Contract.Entity.Room.IncorrectPasswordException
   alias Contract.StateFixtures
@@ -89,6 +92,46 @@ defmodule Contract.Entity.StateTest do
         |> join_room("krys", "kabootar")
 
       # IEx.pry()
+    end
+  end
+
+  @tag timeout: :infinity
+  describe "report player" do
+    setup do
+      state = %State{
+        players: %{
+          "player_abc" => %Player{id: "player_abc", name: "adhiraj", type: :freelancer},
+          "player_def" => %Player{id: "player_def", name: "aman", type: :freelancer},
+          "player_ghi" => %Player{id: "player_ghi", name: "farah", type: :staff},
+          "player_jkl" => %Player{id: "player_jkl", name: "krys", type: :staff},
+          "player_mno" => %Player{id: "player_mno", name: "denny", type: :staff}
+        },
+        reports: %{}
+      }
+
+      %{state: state}
+    end
+
+    test "valid report", %{state: state} do
+      state =
+        state
+        |> State.add_report("player_ghi", "player_abc")
+
+      report = state.reports["player_abc"]
+      assert report.can_remove == false
+
+      state =
+        state
+        |> State.add_report("player_jkl", "player_abc")
+        |> State.add_report("player_mno", "player_abc")
+
+      report = state.reports["player_abc"]
+
+      assert length(report.by) == 3
+      assert report.can_remove == true
+    end
+
+    test "invalid report" do
     end
   end
 end

@@ -1,16 +1,13 @@
 defmodule Contract.Entity.Report do
   @moduledoc """
-  Track reports against players
+  Track reports against players.
   """
-  defstruct reports: %{}
+  defstruct by: [], can_remove: nil, valid: nil
 
   @type t :: %__MODULE__{
-          reports: %{
-            optional(UXID.uxid_string()) => %{
-              by: [UXID.uxid_string()],
-              can_remove: boolean()
-            }
-          }
+          by: [UXID.uxid_string()],
+          can_remove: boolean(),
+          valid: boolean()
         }
 end
 
